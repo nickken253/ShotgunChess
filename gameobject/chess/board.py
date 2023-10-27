@@ -15,6 +15,7 @@ class Board(Sprite):
         self.__info_box = None
         self.__gun_ammo_box = None
         self.__cash_counter = None
+        self.__rot = 0
 
     def init(self):
         from pygame import image
@@ -32,17 +33,33 @@ class Board(Sprite):
     def update(self, delta_time: float()):
         new_x = delta_time * 5
         new_y = 0
-        # self.__player.move(new_x, 0)
+        self.__player.origin = (0, 0)
+        self.__player.rotation = 30
         pass
 
     def render(self):
         from application import application
+
         application.screen.blit(self.texture, self.absolute_position)
         self.__player.render()
         # GTM->currentTurn()->render();
         for y in range(8):
             for x in range(8):
                 self.__chess_table[y][x].render()
+
+        from pygame import image
+        sprite1 = Sprite()
+        sprite1.texture = image.load('resource/texture/chess/Board.png')
+        sprite1.origin = (sprite1.size[0]/2, sprite1.size[1]/2)
+        sprite1.position = (100, 100)
+        application.screen.blit(sprite1.texture, sprite1.absolute_position)
+        sprite2 = Sprite()
+        sprite2.texture = image.load('resource/texture/chess/Board.png')
+        sprite2.origin = (sprite2.size[0]/2, sprite2.size[1]/2)
+        sprite2.position = (100, 100)
+        sprite2.rotation = self.__rot
+        self.__rot += 1
+        application.screen.blit(sprite2.texture, sprite2.absolute_position)
 
         if not self.__is_enabled:
             return

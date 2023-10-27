@@ -76,7 +76,7 @@ class ChessPiece(Sprite):
         from pygame import image
         self.texture = image.load('resource/texture/chess/piece/' + self.__name + '.png')
         self.origin = (16 / 2 * 3, 23 / 2 * 3)
-        self.set_scale((3, 3))
+        self.scale = (3, 3)
         self.current_pos = position
         self.__state = State.SHOW_UP
         a, r, g, b = self.texture.get_colorkey()

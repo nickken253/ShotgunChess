@@ -19,13 +19,15 @@ class ChessBox(Rectangle):
         self.__outline.position = (x, y + 23 / 2 + 4.7)  # Magic offset number
         self.__is_visible = False
 
-    def isMouseHover(self):
+    @property
+    def is_mouse_hover(self) -> bool:
         from pygame import mouse
         return self.rect.collidepoint(mouse.get_pos())
 
-    def isMouseClick(self):
+    @property
+    def is_mouse_click(self) -> bool:
         from pygame import mouse
-        return mouse.get_pressed()[0] and self.isMouseHover()
+        return mouse.get_pressed()[0] and self.is_mouse_hover
 
     @property
     def chess_position(self) -> ChessPosition:
