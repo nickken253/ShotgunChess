@@ -1,3 +1,5 @@
+import math
+
 from gameobject.sprite import Sprite
 
 
@@ -62,10 +64,11 @@ class Shotgun(Sprite):
 
     def render(self):
         from gamemanager import WConnect
+        from pygame import draw
         if self.__is_shootable and self.__is_shooting:
-            # WConnect->getWindow()->draw(m_RangeGun);
-            # WConnect->getWindow()->draw(m_RangeLineL);
-            # WConnect->getWindow()->draw(m_RangeLineR);
+            self.__range_gun.render()
+            self.__range_line_l.render()
+            self.__range_line_r.render()
             pass
         if self.__is_shooting:
             # render all bullets
@@ -160,4 +163,38 @@ class Shotgun(Sprite):
         pass
 
     def __handle_draw_range(self, mouse_pos, delta_time: float()):
+        from utils import GMath
+        from gameobject import GRM
+        from game_config import SHOOTING_RANGE_ANGLE, SHOOTING_RANGE_THICKNESS, SHOOTING_RANGE_COLOR
+        angle = GMath.rad_to_degree(GMath.get_angle(self.position, mouse_pos))
+        angle_l = angle - SHOOTING_RANGE_ANGLE/2
+        angle_r = angle + SHOOTING_RANGE_ANGLE/2
+        r = min(GRM.shot_gun_range, GMath.get_distance(self.position, mouse_pos) - 25)
+        from gameobject.line import Line, Curve
+        # Curve
+        curve = Curve(color=SHOOTING_RANGE_COLOR, thickness=SHOOTING_RANGE_THICKNESS)
+        i = angle_l
+        while i <= angle_r:
+            x = self.position[0] + (r-SHOOTING_RANGE_THICKNESS/2) * math.cos(math.pi*2*i/360)
+            y = self.position[1] + (r-SHOOTING_RANGE_THICKNESS/2) * math.sin(math.pi*2*i/360)
+            curve.points.append((x, y))
+            i += 0.05
+        self.__range_gun = curve
+        # 2 Lines
+        lineL = Line(color=SHOOTING_RANGE_COLOR, thickness=SHOOTING_RANGE_THICKNESS)
+        lineR = Line(color=SHOOTING_RANGE_COLOR, thickness=SHOOTING_RANGE_THICKNESS)
+        xl = self.position[0] + (r*0.85) * math.cos(math.pi * 2 * angle_l/360)
+        yl = self.position[1] + (r*0.85) * math.sin(math.pi * 2 * angle_l/360)
+        xr = self.position[0] + (r*0.85) * math.cos(math.pi * 2 * angle_r/360)
+        yr = self.position[1] + (r*0.85) * math.sin(math.pi * 2 * angle_r/360)
+        lineL.start_pos = (xl, yl)
+        lineR.start_pos = (xr, yr)
+        xl += r/5 * math.cos(math.pi * 2 * angle_l / 360)
+        yl += r/5 * math.sin(math.pi * 2 * angle_l / 360)
+        xr += r/5 * math.cos(math.pi * 2 * angle_r / 360)
+        yr += r/5 * math.sin(math.pi * 2 * angle_r / 360)
+        lineL.end_pos = (xl, yl)
+        lineR.end_pos = (xr, yr)
+        self.__range_line_l = lineL
+        self.__range_line_r = lineR
         pass
