@@ -176,7 +176,25 @@ class PlayerTurn(Base):
             self.isPerforming = True
 
     def __handle_bullet_hit_box(self):
-        pass
+        from gameobject.chess import ChessBoard
+        from gameobject.chess.chess_piece import Type, State
+        for bullet in ChessBoard.player.gun.bullets:
+            for piece in ChessBoard.chess_list:
+                if piece.type != Type.PLAYER and piece.rect.collidepoint(bullet.get_hitbox()) and bullet.is_flying:
+                    bullet.stop()
+                    if piece.state == State.HURT or piece.state == State.KILL or piece.state == State.DEAD:
+                        continue
+                    piece.shoot_pos = ChessBoard.player.current_pos
+                    if bullet.get_damage() >= piece.health:
+                        piece.state = State.KILL
+                        if piece.type != Type.PAWN and piece.type != Type.KING:
+                            # ChessBoard->getSoulCard()->setPiece(piece->getType());
+                            pass
+                    else:
+                        piece.take_damage(bullet.get_damage())
+                        piece.state = State.HURT
+
+                    piece.perform_turn()
 
     def __handle_kill_piece(self) -> bool:
         from gameobject.chess import ChessBoard

@@ -77,6 +77,14 @@ class ChessPiece(Sprite):
     def dest_pos(self, value):
         self.__dest_pos = value
 
+    @property
+    def shoot_pos(self) -> ChessPosition:
+        return self.__shoot_pos
+
+    @shoot_pos.setter
+    def shoot_pos(self, value):
+        self.__shoot_pos = value
+
     def perform_turn(self):
         self.__current_time = 0
         self.is_end_turn = False
@@ -273,3 +281,8 @@ class ChessPiece(Sprite):
     def render(self):
         from gamemanager import WConnect
         WConnect.window.blit(self.texture, self.absolute_position)
+
+    def take_damage(self, dmg):
+        if self.__state == State.HURT:
+            return
+        self.health -= dmg

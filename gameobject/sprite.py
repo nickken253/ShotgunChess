@@ -64,13 +64,10 @@ class Sprite:
 
     @property
     def rect(self) -> pygame.rect.Rect:
-        if self.__texture is None:
-            from pygame.rect import Rect
-            x, y = self.position
-            w, h = self.size
-            return Rect(x, y, w, h)
-        else:
-            return self.__texture.get_rect()
+        from pygame.rect import Rect
+        r = self.texture.get_rect()
+        x, y = self.position
+        return Rect(x, y, r.w, r.h)
 
     @property
     def position(self):

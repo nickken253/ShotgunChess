@@ -28,9 +28,9 @@ class Shotgun(Sprite):
         self.__is_shootable = True
         self.__is_shooting = False
         self.__is_finish_shoot = True
-        #
-        # m_bullets.resize(GameRule->getShotgunSpray());
         from gameobject import GRM
+        del self.__bullets
+        self.__bullets = [None for _ in range(GRM.shot_gun_spray)]
         self.__max_ammo = GRM.shot_gun_max_ammo
         self.__max_capacity = GRM.shot_gun_max_capacity
         self.__current_ammo = self.__max_ammo
@@ -71,25 +71,29 @@ class Shotgun(Sprite):
             self.__range_line_r.render()
             pass
         if self.__is_shooting:
-            # render all bullets
+            for bullet in self.__bullets:
+                if bullet:
+                    bullet.render()
             pass
         WConnect.window.blit(self.texture, self.absolute_position)
         pass
 
     def shoot(self):
+        from game_config import SHOOTING_RANGE_ANGLE
+        from utils import GMath
+        from gameobject import GRM
+        from gameobject.chess.bullet import Bullet
         pos = self.position
-        # for (int i = 0; i < GameRule->getShotgunSpray(); i++) {
-        # 		Bullet* bullet = new Bullet();
-        # 		float angle = this->getRotation();
-        # 		int range = SHOOTING_RANGE_ANGLE*7/9;
-        # 		angle = angle + GameMath::getRandom(-range / 2, range / 2);
-        # 		angle = GameMath::degreeToRad(angle);
-        # 		pos.x += 8.f * cos(angle);
-        # 		pos.y += 8.f * sin(angle);
-        # 		bullet->init(pos, angle);
-        # 		if (m_bullets[i] != nullptr) delete m_bullets[i];
-        # 		m_bullets[i] = bullet;
-        # 	}
+        for i in range(GRM.shot_gun_spray):
+            bullet = Bullet()
+            angle = self.rotation
+            r = SHOOTING_RANGE_ANGLE*7/9
+            angle = angle + GMath.get_random(int(-r/2), int(r/2))
+            angle = GMath.degree_to_rad(angle)
+            angle = 2 * math.pi - angle  # idk why
+            pos = (pos[0] + 8 * math.cos(angle), pos[1] + 8 * math.sin(angle))
+            bullet.init(pos, angle)
+            self.__bullets[i] = bullet
         self.__current_ammo -= 1
         self.__is_finish_shoot = False
         self.__is_shooting = True
@@ -103,9 +107,10 @@ class Shotgun(Sprite):
         self.__is_shootable = True
         self.__is_shooting = False
         self.__is_finish_shoot = True
+        from gameobject import GRM
         del self.__bullets
         self.__bullets = []
-        # m_bullets.resize(GameRule->getShotgunSpray());
+        self.__bullets = [None for _ in range(GRM.shot_gun_spray)]
 
     @property
     def finish_shoot(self) -> bool:
@@ -142,12 +147,21 @@ class Shotgun(Sprite):
         return self.__bullets
 
     def __handle_shoot(self, mouse_pos, delta_time: float()):
-        self.__current_time = 0
-        self.__is_shooting = False
-        self.__is_shootable = False
-        self.__is_finish_shoot = True
-        self.__player.is_end_turn = True
-        pass
+        self.__current_time += delta_time
+        from game_config import SHOOTING_DURATION, SHOOTING_OFFSET
+        from utils import GMath
+        if self.__current_time <= SHOOTING_DURATION:
+            x = GMath.get_harmonic_motion(SHOOTING_OFFSET, SHOOTING_DURATION, self.__current_time)
+            self.origin = (8-x, 8)
+            for bullet in self.__bullets:
+                bullet.update(delta_time)
+        else:
+            self.origin = (8, 8)
+            self.__current_time = 0
+            self.__is_shooting = False
+            self.__is_shootable = False
+            self.__is_finish_shoot = True
+            self.__player.is_end_turn = True
 
     def __handle_rotate_gun(self, mouse_pos, delta_time: float()):
         from utils import GMath
