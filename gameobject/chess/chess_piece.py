@@ -201,6 +201,7 @@ class ChessPiece(Sprite):
             self.origin = (8, 23 / 2)
             self.state = State.IDLE
             self.is_end_turn = True
+            self.colorkey = None
         pass
 
     def __handle_kill(self, delta_time: float()):

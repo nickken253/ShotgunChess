@@ -16,6 +16,7 @@ class Sprite:
         self.__scale_h = 1
         self.__rotation = 0.0
         self.alpha = 255
+        self.colorkey = None
 
     @property
     def texture(self) -> pygame.surface.Surface:
@@ -26,7 +27,12 @@ class Sprite:
         texture = transform.flip(texture, flip_w, flip_h)
         texture = transform.scale(texture, (abs(self.__scale_w) * self.__size_w, abs(self.__scale_h) * self.__size_h))
         texture = transform.rotate(texture, self.__rotation)
-        texture.set_alpha(self.alpha)
+        if self.colorkey:
+            r, g, b = self.colorkey
+            a = self.alpha
+            texture.fill((r, g, b, a), special_flags=pygame.BLEND_RGBA_MULT)
+        else:
+            texture.set_alpha(self.alpha)
         return texture
 
     @texture.setter

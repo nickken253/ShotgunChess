@@ -207,7 +207,6 @@ class PlayerTurn(Base):
                 # CCounter->addAmount(GameRule->getPriceChess(ChessBoard->getChessList()[i]->getType()));
                 if ChessBoard.chess_list[i].type == Type.KING:
                     is_white_king_dead = True
-                del ChessBoard.chess_list[i]
                 ChessBoard.chess_list.pop(i)
                 i -= 1
                 dead_count += 1
