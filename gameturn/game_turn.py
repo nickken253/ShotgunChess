@@ -1,5 +1,7 @@
 from enum import Enum
 
+from gamemanager.singleton import Singleton
+
 
 class Turn(Enum):
     SHOW_UP = 0
@@ -25,7 +27,8 @@ class Base:
     @classmethod
     def create_turn(cls, turn: Turn):
         if turn == Turn.SHOW_UP:
-            return None
+            from gameturn.turn.show_up_turn import ShowupTurn
+            return ShowupTurn()
         if turn == Turn.PLAYER:
             from gameturn.turn.player_turn import PlayerTurn
             return PlayerTurn()
@@ -38,18 +41,18 @@ class Base:
         return Base()
 
 
-class Machine:
+class Machine(metaclass=Singleton):
     def __init__(self):
         self.__turn_count = -1  # Showing up turn will start at 0
         self.__current_turn = None
         self.__next_turn = None
 
     @property
-    def current_turn(self):
+    def current_turn(self) -> Base:
         return self.__current_turn
 
     @property
-    def next_turn(self):
+    def next_turn(self) -> Base:
         return self.__next_turn
 
     @property

@@ -1,7 +1,9 @@
 import pygame.surface
 
+from gamemanager.singleton import Singleton
 
-class WindowConnector:
+
+class WindowConnector(metaclass=Singleton):
     def __init__(self):
         self.__window = None
 

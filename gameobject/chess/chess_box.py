@@ -13,7 +13,7 @@ class ChessBox(Rectangle):
         # Outline init
         self.__outline = Sprite()
         from gamemanager import DATA
-        self.__outline.texture = DATA.get_texture('/chess/MoveBox')
+        self.__outline.texture = DATA.get_texture("\\chess\\MoveBox")
         self.__outline.origin = (45, 45)
         x, y = self.rect.x, self.rect.y
         self.__outline.position = (x, y + 23 / 2 + 4.7)  # Magic offset number

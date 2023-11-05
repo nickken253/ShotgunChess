@@ -1,9 +1,8 @@
-from gameobject.chess.player import Player
 from gameobject.sprite import Sprite
 
 
 class Shotgun(Sprite):
-    def __init__(self, player: Player()):
+    def __init__(self, player):
         super().__init__()
         self.__player = player
         self.__current_time = 0
@@ -29,12 +28,9 @@ class Shotgun(Sprite):
         self.__is_finish_shoot = True
         #
         # m_bullets.resize(GameRule->getShotgunSpray());
-        # m_maxAmmo = GameRule->getShotgunMaxAmmo();
-        # m_maxCapacity = GameRule->getShotgunMaxCapacity();
-        # m_currentAmmo = m_maxAmmo;
-        # m_currentCapacity = m_maxCapacity;
-        self.__max_ammo = 8
-        self.__max_capacity = 2
+        from gameobject import GRM
+        self.__max_ammo = GRM.shot_gun_max_ammo
+        self.__max_capacity = GRM.shot_gun_max_capacity
         self.__current_ammo = self.__max_ammo
         self.__current_capacity = self.__max_capacity
 
@@ -50,10 +46,10 @@ class Shotgun(Sprite):
             scale_y = -scale_y
         self.scale = (scale_x, scale_y)
         #
-        # sf::Color
-        # gunColor = this->getColor();
-        # gunColor.a = m_player->getColor().a;
-        # this->setColor(gunColor);
+        color = self.texture.get_colorkey()
+        color_a = self.__player.texture.get_color_key()[3]
+        color = (color[0], color[1], color[2], color_a)
+        self.texture.set_colorkey(color)
 
     def update(self, delta_time: float()):
         self.sync()
@@ -65,7 +61,6 @@ class Shotgun(Sprite):
         self.__handle_rotate_gun(mouse_pos, delta_time)
         if self.__is_shootable:
             self.__handle_draw_range(mouse_pos, delta_time)
-        pass
 
     def render(self):
         from gamemanager import WConnect
@@ -81,6 +76,23 @@ class Shotgun(Sprite):
         pass
 
     def shoot(self):
+        pos = self.position
+        # for (int i = 0; i < GameRule->getShotgunSpray(); i++) {
+        # 		Bullet* bullet = new Bullet();
+        # 		float angle = this->getRotation();
+        # 		int range = SHOOTING_RANGE_ANGLE*7/9;
+        # 		angle = angle + GameMath::getRandom(-range / 2, range / 2);
+        # 		angle = GameMath::degreeToRad(angle);
+        # 		pos.x += 8.f * cos(angle);
+        # 		pos.y += 8.f * sin(angle);
+        # 		bullet->init(pos, angle);
+        # 		if (m_bullets[i] != nullptr) delete m_bullets[i];
+        # 		m_bullets[i] = bullet;
+        # 	}
+        self.__current_ammo -= 1
+        self.__is_finish_shoot = False
+        self.__is_shooting = True
+
         pass
 
     def set_shootable(self, value: bool):
@@ -129,6 +141,11 @@ class Shotgun(Sprite):
         return self.__bullets
 
     def __handle_shoot(self, mouse_pos, delta_time: float()):
+        self.__current_time = 0
+        self.__is_shooting = False
+        self.__is_shootable = False
+        self.__is_finish_shoot = True
+        self.__player.is_end_turn = True
         pass
 
     def __handle_rotate_gun(self, mouse_pos, delta_time: float()):

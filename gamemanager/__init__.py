@@ -3,4 +3,3 @@ from gamemanager.window_connector import WindowConnector
 
 DATA = ResourceManager()
 WConnect = WindowConnector()
-GSM = None

@@ -2,8 +2,10 @@ import os
 
 import pygame
 
+from gamemanager.singleton import Singleton
 
-class ResourceManager:
+
+class ResourceManager(metaclass=Singleton):
     def __init__(self):
         self.isPreloaded = None
         self.isSoundEnable = None
@@ -33,7 +35,7 @@ class ResourceManager:
         if name in self.map_texture:
             return self.map_texture[name]
         self.add_texture(name)
-        return self.get_texture(name)
+        return self.get_texture(name).copy()
 
     def has_texture(self, name: str) -> bool:
         return name in self.map_texture

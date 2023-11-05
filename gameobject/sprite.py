@@ -15,6 +15,7 @@ class Sprite:
         self.__scale_w = 1
         self.__scale_h = 1
         self.__rotation = 0
+        self.alpha = 255
 
     @property
     def texture(self) -> pygame.surface.Surface:
@@ -27,6 +28,7 @@ class Sprite:
         texture = transform.flip(self.__texture, flip_w, flip_h)
         texture = transform.scale(texture, (abs(self.__scale_w) * self.__size_w, abs(self.__scale_h) * self.__size_h))
         texture = transform.rotate(texture, self.__rotation)
+        texture.set_alpha(self.alpha)
         return texture
 
     @texture.setter
@@ -90,19 +92,14 @@ class Sprite:
 
     @property
     def absolute_position(self):
-        x, y = self.__position_x, self.__position_y
-        angle = math.radians(self.__rotation)
-        origin_x = self.__origin_x * math.cos(angle) - self.__origin_y * math.sin(angle)
-        origin_y = self.__origin_x * math.sin(angle) + self.__origin_y * math.cos(angle)
-        if self.__rotation <= 90:
-            angle = math.radians(self.__rotation)
-            y -= self.__size_w * math.sin(angle)
-        elif self.__rotation <= 180:
-            angle = math.radians(self.__rotation - 90)
-            y -= self.__size_h * math.sin(angle) + self.__size_w * math.cos(angle)
-            x -= self.__size_w * math.sin(angle)
-        return self.__position_x - origin_x, self.__position_y - origin_y
+        return self.__position_x - self.__origin_x * self.__scale_w, self.__position_y - self.__origin_y * self.__scale_h
 
     def move(self, x, y):
         self.__position_x += x
         self.__position_y += y
+
+    def contain(self, position):
+        return ((self.position[0] - self.origin[0] <= position[0] <= self.position[0] - self.origin[0] + self.size[0] *
+                 self.scale[0]) and
+                (self.position[1] - self.origin[1] <= position[1] <= self.position[1] - self.origin[1] + self.size[1] *
+                 self.scale[1]))

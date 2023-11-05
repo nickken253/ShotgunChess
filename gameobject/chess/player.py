@@ -4,7 +4,9 @@ from gameobject.chess.chess_piece import ChessPiece
 class Player(ChessPiece):
     def __init__(self):
         super().__init__('B_King')
-        self.__gun = None
+        from gameobject.chess.shotgun import Shotgun
+        self.__gun = Shotgun(self)
+        self.__gun.init()
 
     @property
     def gun(self):
