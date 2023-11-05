@@ -45,6 +45,7 @@ class ShowupTurn(Base):
             if ChessBoard.player.is_end_turn:
                 self.__handle_bot_show_up(delta_time)
         else:
+            ChessBoard.player.update(delta_time)
             ChessBoard.enable()
             # GTM.change_turn(Turn.PLAYER)
 

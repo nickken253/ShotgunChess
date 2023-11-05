@@ -20,9 +20,9 @@ class Shotgun(Sprite):
 
     def init(self):
         from gamemanager import DATA
-        self.texture = DATA.get_texture('chess/gun/shotgun')
+        self.texture = DATA.get_texture("\\chess\\gun\\shotgun")
         self.scale = (2, 2)
-        self.origin = (8 * 2, 8 * 2)
+        self.origin = (8, 8)
         self.__is_shootable = True
         self.__is_shooting = False
         self.__is_finish_shoot = True
@@ -46,10 +46,8 @@ class Shotgun(Sprite):
             scale_y = -scale_y
         self.scale = (scale_x, scale_y)
         #
-        color = self.texture.get_colorkey()
-        color_a = self.__player.texture.get_color_key()[3]
-        color = (color[0], color[1], color[2], color_a)
-        self.texture.set_colorkey(color)
+        color_a = self.__player.alpha
+        self.alpha = color_a
 
     def update(self, delta_time: float()):
         self.sync()
@@ -149,6 +147,16 @@ class Shotgun(Sprite):
         pass
 
     def __handle_rotate_gun(self, mouse_pos, delta_time: float()):
+        from utils import GMath
+        from math import pi
+        angle = GMath.rad_to_degree(
+            2*pi - GMath.get_angle(self.position, mouse_pos)
+        )
+        self.rotation = angle
+        if angle < 90 or angle > 270:
+            self.scale = (2, 2)
+        else:
+            self.scale = (2, -2)
         pass
 
     def __handle_draw_range(self, mouse_pos, delta_time: float()):

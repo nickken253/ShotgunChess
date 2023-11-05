@@ -17,9 +17,11 @@ class Player(ChessPiece):
 
     def update(self, delta_time):
         super().update(delta_time)
+        self.__gun.update(delta_time)
 
     def render(self):
         super().render()
+        self.__gun.render()
 
     def move(self, x, y):
         super().move(x, y)

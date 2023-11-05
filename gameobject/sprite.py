@@ -14,18 +14,16 @@ class Sprite:
         self.__size_h = 0
         self.__scale_w = 1
         self.__scale_h = 1
-        self.__rotation = 0
+        self.__rotation = 0.0
         self.alpha = 255
 
     @property
     def texture(self) -> pygame.surface.Surface:
         from pygame import transform
-        flip_w, flip_h = False, False
-        if self.__scale_w < 0:
-            flip_w = True
-        if self.__scale_h < 0:
-            flip_h = True
-        texture = transform.flip(self.__texture, flip_w, flip_h)
+        flip_w = False if self.__scale_w > 0 else True
+        flip_h = False if self.__scale_h > 0 else True
+        texture = self.__texture.copy()
+        texture = transform.flip(texture, flip_w, flip_h)
         texture = transform.scale(texture, (abs(self.__scale_w) * self.__size_w, abs(self.__scale_h) * self.__size_h))
         texture = transform.rotate(texture, self.__rotation)
         texture.set_alpha(self.alpha)
@@ -92,7 +90,30 @@ class Sprite:
 
     @property
     def absolute_position(self):
-        return self.__position_x - self.__origin_x * self.__scale_w, self.__position_y - self.__origin_y * self.__scale_h
+        from math import sin, cos, sqrt, atan, radians
+
+        def calc(w, alpha, x, y):
+            if y == 0:
+                y = 0.00001
+            return (sqrt(x * x + y * y) * sin(alpha + atan(x / y)),
+                    w * sin(alpha) + sqrt(x * x + y * y) * cos(alpha + atan(x / y)))
+
+        flip_w = False if self.__scale_w > 0 else True
+        flip_h = False if self.__scale_h > 0 else True
+        scale_w, scale_h = abs(self.__scale_w), abs(self.__scale_h)
+        size_w, size_h = self.__size_w * scale_w, self.__size_h * scale_h
+        origin_x = (self.__size_w-self.__origin_x if flip_w else self.__origin_x) * scale_w
+        origin_y = (self.__size_h-self.__origin_y if flip_h else self.__origin_y) * scale_h
+        new_origin_x, new_origin_y = origin_x, origin_y
+        if self.__rotation <= 90:
+            new_origin_x, new_origin_y = calc(size_w, radians(self.__rotation), origin_x, origin_y)
+        elif self.__rotation <= 180:
+            new_origin_x, new_origin_y = calc(size_h, radians(self.__rotation-90), origin_y, size_w-origin_x)
+        elif self.__rotation <= 270:
+            new_origin_x, new_origin_y = calc(size_w, radians(self.__rotation-180), size_w-origin_x, size_h-origin_y)
+        elif self.__rotation <= 360:
+            new_origin_x, new_origin_y = calc(size_h, radians(self.__rotation-270), size_h-origin_y, origin_x)
+        return self.__position_x - new_origin_x, self.__position_y - new_origin_y
 
     def move(self, x, y):
         self.__position_x += x
