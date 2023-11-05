@@ -65,7 +65,7 @@ class Shotgun(Sprite):
     def render(self):
         from gamemanager import WConnect
         from pygame import draw
-        if self.__is_shootable and self.__is_shooting:
+        if self.__is_shootable and self.__is_shooting is False:
             self.__range_gun.render()
             self.__range_line_l.render()
             self.__range_line_r.render()

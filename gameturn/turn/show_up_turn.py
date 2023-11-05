@@ -47,7 +47,7 @@ class ShowupTurn(Base):
         else:
             ChessBoard.player.update(delta_time)
             ChessBoard.enable()
-            # GTM.change_turn(Turn.PLAYER)
+            GTM.change_turn(Turn.PLAYER)
 
     def render(self):
         from gameobject.chess import ChessBoard

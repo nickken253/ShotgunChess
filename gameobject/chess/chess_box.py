@@ -22,7 +22,7 @@ class ChessBox(Rectangle):
     @property
     def is_mouse_hover(self) -> bool:
         from pygame import mouse
-        return self.rect.collidepoint(mouse.get_pos())
+        return self.absolute_rect.collidepoint(mouse.get_pos())
 
     @property
     def is_mouse_click(self) -> bool:

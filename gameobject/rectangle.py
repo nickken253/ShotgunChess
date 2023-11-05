@@ -32,10 +32,14 @@ class Rectangle:
     def absolute_position(self):
         return self.rect.x - self.__origin_x, self.rect.y - self.__origin_y
 
+    @property
+    def absolute_rect(self):
+        x, y = self.absolute_position
+        absolute_rect = pygame.Rect(x, y, self.rect.w, self.rect.h)
+        return absolute_rect
+
     def render(self):
         from pygame.draw import rect
         from gamemanager import WConnect
-        x, y = self.absolute_position
-        absolute_rect = pygame.Rect(x, y, self.rect.w, self.rect.h)
-        rect(WConnect.window, self.color, absolute_rect)
-        rect(WConnect.window, self.border_color, absolute_rect, 1)
+        rect(WConnect.window, self.color, self.absolute_rect)
+        rect(WConnect.window, self.border_color, self.absolute_rect, 1)
