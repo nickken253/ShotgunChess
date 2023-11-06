@@ -26,6 +26,7 @@ class GSIntro(GameStateBase):
     def init(self):
         super().init()
         self.logo = DATA.get_texture("intro")
+        DATA.play_sound("intro")
         self.alpha = 0
 
     def update(self, delta_time: float):

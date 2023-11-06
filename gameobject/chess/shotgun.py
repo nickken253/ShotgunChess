@@ -82,6 +82,8 @@ class Shotgun(Sprite):
         from utils import GMath
         from gameobject import GRM
         from gameobject.chess.bullet import Bullet
+        from gamemanager import DATA
+        
         pos = self.position
         for i in range(GRM.shot_gun_spray):
             bullet = Bullet()
@@ -96,7 +98,8 @@ class Shotgun(Sprite):
         self.__current_ammo -= 1
         self.__is_finish_shoot = False
         self.__is_shooting = True
-
+        
+        DATA.play_sound("shoot")
         pass
 
     def set_shootable(self, value: bool):

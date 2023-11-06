@@ -21,6 +21,7 @@ class GSMenu(GameStateBase):
         self.current_time = 0.0
         self.is_perform_transition = True
         self.shotgun = Sprite()
+        DATA.play_sound("ingame")
 
     def __del__(self):
         pass
@@ -33,6 +34,7 @@ class GSMenu(GameStateBase):
 
     def resume(self):
         super().resume()
+        DATA.play_sound("ingame")
 
     def init(self):
         super().init()
