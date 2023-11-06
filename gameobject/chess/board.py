@@ -27,12 +27,12 @@ class Board(Sprite, metaclass=Singleton):
         self.origin = (550 / 2, 550 / 2)
         self.position = (640, 373)
         from gameobject.chess.chess_position import ChessPosition
-        self.__cash_counter = None  # init
-
         self.__player = Player()
         self.__player.init(ChessPosition(3, 7))
 
     def update(self, delta_time: float()):
+        from gameobject.chess import CCounter
+        CCounter.update(delta_time)
         from gameturn import GTM
         if GTM.need_to_change_turn:
             GTM.perform_change()
@@ -45,7 +45,9 @@ class Board(Sprite, metaclass=Singleton):
         pass
 
     def render(self):
+        from gameobject.chess import CCounter
         from gamemanager import WConnect
+        CCounter.render()
         WConnect.window.blit(self.texture, self.absolute_position)
         WConnect.window.blit(self.texture, self.absolute_position)
         from gameturn import GTM
@@ -68,6 +70,7 @@ class Board(Sprite, metaclass=Singleton):
         # Clear board
         from gameobject import GRM
         from gameobject.chess.chess_piece import Type
+        from gameobject.chess import CCounter
         self.__chess_list.clear()
         self.__chess_list = GRM.get_chess_list(level)
         for piece in self.__chess_list:
@@ -87,6 +90,8 @@ class Board(Sprite, metaclass=Singleton):
             from gameobject.chess.gun_ammo_box import GunAmmoBox
             self.__gun_ammo_box = GunAmmoBox()
             self.__gun_ammo_box.init()
+        if level == 1:
+            CCounter.reset()
         #     if (level == 1) CCounter->reset();
         #     //
         #     m_soulCard->reset();

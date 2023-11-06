@@ -197,14 +197,15 @@ class PlayerTurn(Base):
                     piece.perform_turn()
 
     def __handle_kill_piece(self) -> bool:
-        from gameobject.chess import ChessBoard
+        from gameobject.chess import ChessBoard, CCounter
         from gameobject.chess.chess_piece import Type, State
+        from gameobject import GRM
         dead_count = 0
         is_white_king_dead = False
         i = 0
         while i < len(ChessBoard.chess_list):
             if ChessBoard.chess_list[i].state == State.DEAD:
-                # CCounter->addAmount(GameRule->getPriceChess(ChessBoard->getChessList()[i]->getType()));
+                CCounter.add_amount(GRM.price_list[ChessBoard.chess_list[i].type])
                 if ChessBoard.chess_list[i].type == Type.KING:
                     is_white_king_dead = True
                 ChessBoard.chess_list.pop(i)
