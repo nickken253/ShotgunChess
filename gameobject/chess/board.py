@@ -39,7 +39,7 @@ class Board(Sprite, metaclass=Singleton):
         GTM.current_turn.update(delta_time)
         if self.__is_enabled is False:
             return
-        # m_soulCard->update(deltaTime);
+        self.__soul_card.update(delta_time)
         self.__gun_ammo_box.update(delta_time)
         self.__info_box.update(delta_time)
         pass
@@ -57,7 +57,7 @@ class Board(Sprite, metaclass=Singleton):
                 self.__chess_table[y][x].render()
         if not self.__is_enabled:
             return
-        # m_soulCard->render();
+        self.__soul_card.render()
         self.__gun_ammo_box.render()
         self.__info_box.render()
         # draw chess box
@@ -77,11 +77,10 @@ class Board(Sprite, metaclass=Singleton):
             if piece.type == Type.PLAYER:
                 self.__player = piece
                 break
-        # //
-        #     if (m_soulCard == nullptr) {
-        #         m_soulCard = new SoulCard();
-        #         m_soulCard->init();
-        #     }
+        if self.__soul_card is None:
+            from gameobject.chess.soul_card import SoulCard
+            self.__soul_card = SoulCard()
+            self.__soul_card.init()
         if self.__info_box is None:
             from gameobject.chess.info_box import InfoBox
             self.__info_box = InfoBox()
@@ -92,9 +91,7 @@ class Board(Sprite, metaclass=Singleton):
             self.__gun_ammo_box.init()
         if level == 1:
             CCounter.reset()
-        #     if (level == 1) CCounter->reset();
-        #     //
-        #     m_soulCard->reset();
+        self.__soul_card.reset()
         self.__gun_ammo_box.set_gun(self.player.gun)
         from gameturn import GTM
         from gameturn.game_turn import Turn

@@ -124,15 +124,15 @@ class PlayerTurn(Base):
         if ChessBoard.player.gun.finish_shoot is False:
             return
 
-        # if self.__use_soul_card:
-        #     self.__handle_soul_card_event(ChessBoard.soul_card.piece)
+        if self.__use_soul_card:
+            self.__handle_soul_card_event(ChessBoard.soul_card.piece)
+            return
 
-        # if ChessBoard.soul_card.is_hover:
-            #  if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && ChessBoard->getSoulCard()->hasSoul()) {
-            #             useSoulCard = true;
-            #             return;
-            #         }
-            pass
+        if ChessBoard.soul_card.is_hover:
+            from pygame import mouse
+            if mouse.get_pressed()[0] and ChessBoard.soul_card.has_soul:
+                self.__use_soul_card = True
+                return
 
         # other event
         ChessBoard.player.gun.set_shootable(False)
@@ -161,8 +161,33 @@ class PlayerTurn(Base):
             else:
                 ChessBoard.get_check_box(pos.x, pos.y).hideOutline()
 
-    def __handle_soul_card_event(self):
-        pass
+    def __handle_soul_card_event(self, piece_type):
+        from gameobject.chess.chess_piece import Type, State
+        from gameobject.chess.chess_position import ChessPosition
+        from gameobject.chess import ChessBoard
+        from utils import MoveGen
+        if piece_type == Type.QUEEN:
+            self.__move_list = MoveGen.get_queen_move(self.__player_pos)
+        elif piece_type == Type.BISHOP:
+            self.__move_list = MoveGen.get_bishop_move(self.__player_pos)
+        elif piece_type == Type.KNIGHT:
+            self.__move_list = MoveGen.get_knight_move(self.__player_pos)
+        elif piece_type == Type.ROOK:
+            self.__move_list = MoveGen.get_rook_move(self.__player_pos)
+        move_selected = False
+        for pos in self.__move_list:
+            ChessBoard.get_check_box(pos.x, pos.y).showOutline()
+            if ChessBoard.get_check_box(pos.x, pos.y).is_mouse_click:
+                ChessBoard.player.perform_turn()
+                ChessBoard.player.dest_pos = ChessPosition(pos.x, pos. y)
+                ChessBoard.player.state = State.MOVING
+                self.isPerforming = True
+                move_selected = True
+                break
+        if move_selected:
+            ChessBoard.soul_card.reset()
+            for pos in self.__move_list:
+                ChessBoard.get_check_box(pos.x, pos.y).hideOutline()
 
     def __handle_shoot_event(self):
         from gameobject.chess import ChessBoard
@@ -188,8 +213,7 @@ class PlayerTurn(Base):
                     if bullet.get_damage() >= piece.health:
                         piece.state = State.KILL
                         if piece.type != Type.PAWN and piece.type != Type.KING:
-                            # ChessBoard->getSoulCard()->setPiece(piece->getType());
-                            pass
+                            ChessBoard.soul_card.piece = piece.type
                     else:
                         piece.take_damage(bullet.get_damage())
                         piece.state = State.HURT
