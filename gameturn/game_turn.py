@@ -33,11 +33,14 @@ class Base:
             from gameturn.turn.player_turn import PlayerTurn
             return PlayerTurn()
         if turn == Turn.BOT:
-            return None
+            from gameturn.turn.bot_turn import BotTurn
+            return BotTurn()
         if turn == Turn.WIN:
-            return None
+            from gameturn.turn.win_turn import WinTurn
+            return WinTurn()
         if turn == Turn.LOSE:
-            return None
+            from gameturn.turn.lose_turn import LoseTurn
+            return LoseTurn()
         return Base()
 
 

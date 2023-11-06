@@ -247,8 +247,7 @@ class ChessPiece(Sprite):
             self.type = Type.PAWN
         # re-init
         from gamemanager import DATA
-        self.texture = DATA.get_texture(name)
-        # self.__color = self.texture.get_colorkey()
+        self.texture = DATA.get_texture(self.__name)
         from gameobject import GRM
         self.health = GRM.health_list[self.type]
         self.queue_size = GRM.queue_size_list[self.type]
