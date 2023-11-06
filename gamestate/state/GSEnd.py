@@ -50,7 +50,7 @@ class GSEnd(GameStateBase):
 
     def render(self):
         super().render()
-        WConnect.get_window().blit(self.background, (0, 0))
+        WConnect.window.blit(self.background, (0, 0))
         self.btn_back.render()
 
     def update_color(self):

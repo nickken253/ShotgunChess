@@ -105,10 +105,10 @@ class GSModeSelect(GameStateBase):
         from gameobject import GRM
         from gameobject.game_rule_manager import GameMode
         GRM.set_mode(GameMode.NORMAL)
-        # GSM.change_state(StateTypes.PLAY)
+        GSM.change_state(StateTypes.PLAY)
 
     def __hard_btn_on_click(self):
         from gameobject import GRM
         from gameobject.game_rule_manager import GameMode
         GRM.set_mode(GameMode.HARD)
-        # GSM.change_state(StateTypes.PLAY)
+        GSM.change_state(StateTypes.PLAY)

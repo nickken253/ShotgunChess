@@ -17,7 +17,6 @@ class Board(Sprite, metaclass=Singleton):
         self.__info_box = None
         self.__gun_ammo_box = None
         self.__cash_counter = None
-        self.__rot = 0
 
     def init(self):
         from pygame import image
@@ -66,7 +65,6 @@ class Board(Sprite, metaclass=Singleton):
             for x in range(8):
                 self.__chess_table[y][x].render()
 
-
     def set_level(self, level: int()):
         # Clear board
         from gameobject import GRM
@@ -97,7 +95,6 @@ class Board(Sprite, metaclass=Singleton):
         from gameturn import GTM
         from gameturn.game_turn import Turn
         GTM.change_turn(Turn.SHOW_UP)
-        pass
 
     @property
     def player(self) -> Player:
