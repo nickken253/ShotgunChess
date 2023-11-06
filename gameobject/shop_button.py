@@ -24,20 +24,20 @@ class ShopButton:
 
     def init(self, name: str, price: int):
         self.name = name
-        self.selected = Rectangle((0, 0), (540.0, 47.0))
-        self.selected.border_color = (255, 255, 255)
-
-        font_title = DATA.get_font("Silver_50")
-        # font_title.bold = True
-        self.lbl_title.string = self.name
-        self.lbl_title.color = (56, 52, 80)
-        self.lbl_title.set_font(font_title)
-
-        font_price = DATA.get_font("Silver_38")
-        # font_price.bold = True
-        self.lbl_price.string = "upgrade cost: " + str(price)
-        self.lbl_price.color = (56, 52, 80)
-        self.lbl_price.set_font(font_price)
+        # self.selected = Rectangle((0, 0), (540.0, 47.0))
+        # self.selected.border_color = (255, 255, 255)
+        #
+        # font_title = DATA.get_font("Silver_50")
+        # # font_title.bold = True
+        # self.lbl_title.string = self.name
+        # self.lbl_title.color = (56, 52, 80)
+        # self.lbl_title.set_font(font_title)
+        #
+        # font_price = DATA.get_font("Silver_38")
+        # # font_price.bold = True
+        # self.lbl_price.string = "upgrade cost: " + str(price)
+        # self.lbl_price.color = (56, 52, 80)
+        # self.lbl_price.set_font(font_price)
 
     def update(self, delta_time: float):
         new_title = self.name

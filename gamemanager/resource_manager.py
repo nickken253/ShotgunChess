@@ -40,17 +40,27 @@ class ResourceManager(metaclass=Singleton):
     def has_texture(self, name: str) -> bool:
         return name in self.map_texture
 
-    def add_font(self, name: str):
-        pass
+    def add_font(self, name: str, size: int):
+        font = pygame.font.Font(self.font_path + name + ".ttf", size)
+        if font in self.map_font:
+            return
+        self.map_font[f"{name}_{size}"] = font
 
-    def remove_font(self, name: str):
-        pass
+    def remove_font(self, name: str, size: int):
+        key = f"{name}_{size}"
+        if key in self.map_font:
+            del self.map_font[key]
 
-    def get_font(self, name: str):
-        pass
+    def get_font(self, name: str, size: int):
+        key = f"{name}_{size}"
+        if key in self.map_font:
+            return self.map_font[key]
+        self.add_font(name, size)
+        return self.get_font(name, size)
 
-    def has_font(self, name: str) -> bool:
-        pass
+    def has_font(self, name: str, size: int) -> bool:
+        key = f"{name}_{size}"
+        return key in self.map_font
 
     def add_sound(self, name: str):
         pass

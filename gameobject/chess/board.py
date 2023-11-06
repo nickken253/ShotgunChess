@@ -37,13 +37,17 @@ class Board(Sprite, metaclass=Singleton):
         if GTM.need_to_change_turn:
             GTM.perform_change()
         GTM.current_turn.update(delta_time)
+        if self.__is_enabled is False:
+            return
+        # m_soulCard->update(deltaTime);
+        # m_ammoBox->update(deltaTime);
+        self.__info_box.update(delta_time)
         pass
 
     def render(self):
         from gamemanager import WConnect
         WConnect.window.blit(self.texture, self.absolute_position)
         WConnect.window.blit(self.texture, self.absolute_position)
-        # self.__player.render()
         from gameturn import GTM
         GTM.current_turn.render()
         for y in range(8):
@@ -51,17 +55,14 @@ class Board(Sprite, metaclass=Singleton):
                 self.__chess_table[y][x].render()
         if not self.__is_enabled:
             return
+        # m_soulCard->render();
+        # m_ammoBox->render();
+        self.__info_box.render()
+        # draw chess box
         for y in range(8):
             for x in range(8):
                 self.__chess_table[y][x].render()
-        # m_soulCard->render();
-        # m_infoBox->render();
-        # m_ammoBox->render();
-        # for (int y = 0; y < 8; y++) {
-            # for (int x = 0; x < 8; x++) {
-            #    m_ChessTable[y][x].render();
-            # }
-        # }
+
 
     def set_level(self, level: int()):
         # Clear board
@@ -78,10 +79,10 @@ class Board(Sprite, metaclass=Singleton):
         #         m_soulCard = new SoulCard();
         #         m_soulCard->init();
         #     }
-        #     if (m_infoBox == nullptr) {
-        #         m_infoBox = new InfoBox();
-        #         m_infoBox->init();
-        #     }
+        if self.__info_box is None:
+            from gameobject.chess.info_box import InfoBox
+            self.__info_box = InfoBox()
+            self.__info_box.init()
         #     if (m_ammoBox == nullptr) {
         #         m_ammoBox = new GunAmmoBox();
         #         m_ammoBox->init();
