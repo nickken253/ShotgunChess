@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 
-from gamestatemanager.state_types import StateTypes
+from gamestate.state_types import StateTypes
 
 
 class GameStateBase(ABC):
@@ -37,13 +37,13 @@ class GameStateBase(ABC):
 
     @staticmethod
     def create_state(state_type: StateTypes):
-        from gamestatemanager.State.GSAbout import GSAbout
-        from gamestatemanager.State.GSEnd import GSEnd
-        from gamestatemanager.State.GSIntro import GSIntro
-        from gamestatemanager.State.GSMenu import GSMenu
-        from gamestatemanager.State.GSModeSelect import GSModeSelect
-        from gamestatemanager.State.GSPlay import GSPlay
-        from gamestatemanager.State.GSUpgrade import GSUpgrade
+        from gamestate.state.GSAbout import GSAbout
+        from gamestate.state.GSEnd import GSEnd
+        from gamestate.state.GSIntro import GSIntro
+        from gamestate.state.GSMenu import GSMenu
+        from gamestate.state.GSModeSelect import GSModeSelect
+        from gamestate.state.GSPlay import GSPlay
+        from gamestate.state.GSUpgrade import GSUpgrade
         game_state = None
         if state_type == StateTypes.INVALID:
             pass

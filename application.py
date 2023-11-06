@@ -12,9 +12,9 @@ class Application:
         self.clock = pygame.time.Clock()
         self.running = True
         from gamemanager import WConnect
-        from gamestatemanager import GSM
+        from gamestate import GSM
         self.__gsm = GSM
-        from gamestatemanager.state_types import StateTypes
+        from gamestate.state_types import StateTypes
         WConnect.window = self.screen
         self.__gsm.change_state(StateTypes.INTRO)
 

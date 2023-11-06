@@ -1,7 +1,7 @@
 from gamemanager import WConnect, DATA
-from gamestatemanager.game_state_base import GameStateBase
-from gamestatemanager import GSM
-from gamestatemanager.state_types import StateTypes
+from gamestate.game_state_base import GameStateBase
+from gamestate import GSM
+from gamestate.state_types import StateTypes
 
 
 class GSModeSelect(GameStateBase):

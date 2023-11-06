@@ -89,6 +89,6 @@ class LoseTurn(Base):
         self.__update_color()
 
     def __btn_back_on_click(self):
-        from gamestatemanager import GSM
+        from gamestate import GSM
         GSM.pop_state()
         GSM.pop_state()

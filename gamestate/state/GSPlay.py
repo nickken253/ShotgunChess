@@ -1,6 +1,6 @@
 from gamemanager import WConnect, DATA
-from gamestatemanager.game_state_base import GameStateBase
-from gamestatemanager import GSM
+from gamestate.game_state_base import GameStateBase
+from gamestate import GSM
 
 
 class GSPlay(GameStateBase):

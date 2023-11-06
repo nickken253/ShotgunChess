@@ -23,8 +23,8 @@ class WinTurn(Base):
     def update(self, delta_time: float()):
         from gameobject.chess import ChessBoard
         from gameobject import GRM
-        from gamestatemanager import GSM
-        from gamestatemanager.state_types import StateTypes
+        from gamestate import GSM
+        from gamestate.state_types import StateTypes
         from game_config import FINAL_LEVEL
         if len(ChessBoard.chess_list) == 1:
             if GRM.current_level == FINAL_LEVEL:

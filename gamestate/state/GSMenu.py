@@ -3,9 +3,9 @@ import sys
 import pygame
 
 from gamemanager import WConnect, DATA
-from gamestatemanager import GSM
-from gamestatemanager.game_state_base import GameStateBase
-from gamestatemanager.state_types import StateTypes
+from gamestate import GSM
+from gamestate.game_state_base import GameStateBase
+from gamestate.state_types import StateTypes
 
 
 class GSMenu(GameStateBase):
