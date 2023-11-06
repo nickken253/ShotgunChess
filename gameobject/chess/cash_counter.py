@@ -37,6 +37,7 @@ class CashCounter(metaclass=Singleton):
         self.__lbl_cash.render()
 
     def add_amount(self, amount: int):
+        print(f"current = {self.current_cash}, amount = {amount}")
         self.__new_cash += amount
         if self.__new_cash > 999999999:
             self.__new_cash = 999999999
