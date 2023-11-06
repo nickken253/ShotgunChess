@@ -38,6 +38,7 @@ class GSEnd(GameStateBase):
             GSM.pop_state()
         ))
         DATA.play_sound("smb_stage_clear")
+        DATA.stop_sound("ingame")
 
     def update(self, delta_time: float):
         super().update(delta_time)

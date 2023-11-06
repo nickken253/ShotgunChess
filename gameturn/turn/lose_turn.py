@@ -66,6 +66,7 @@ class LoseTurn(Base):
     def __handle_kill_event(self, delta_time: float):
         from gameobject.chess import ChessBoard
         from gameobject.chess.chess_piece import State
+        from gamemanager import DATA
         self.__piece.update(delta_time)
         ChessBoard.player.update(delta_time)
         if ChessBoard.player.state == State.IDLE and self.__piece.rect.colliderect(ChessBoard.player.rect):
@@ -75,7 +76,8 @@ class LoseTurn(Base):
         if ChessBoard.player.state == State.DEAD and ChessBoard.player.is_end_turn:
             self.isPerforming = False
             ChessBoard.disable()
-            # DATA->playSound("smb_gameover");
+            DATA.play_sound("smb_gameover")
+            DATA.stop_sound("ingame")
 
 
     def __handle_after_death(self, delta_time: float):

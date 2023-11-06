@@ -131,6 +131,7 @@ class ChessPiece(Sprite):
     def __handle_show_up(self, delta_time: float()):
         from utils import GMath
         import game_config
+        from gamemanager import DATA
         self.__current_time += delta_time
         if self.__current_time < game_config.SHOW_UP_DURATION:
             offset_y = GMath.get_harmonic_motion(game_config.SHOW_UP_OFFSET, game_config.SHOW_UP_DURATION,
@@ -140,7 +141,7 @@ class ChessPiece(Sprite):
             self.position = pos
         else:
             self.current_pos = self.__current_pos
-            # DATA->playSound("drop1");
+            DATA.play_sound("drop1")
 
         if self.__current_time < game_config.SHOW_UP_DURATION / 2:
             color_a = min(255, int(round(255 * self.__current_time / (game_config.SHOW_UP_DURATION / 2))))
@@ -165,6 +166,7 @@ class ChessPiece(Sprite):
         self.__current_time += delta_time
         from utils import GMath
         import game_config
+        from gamemanager import DATA
         if self.__current_time < game_config.MOVING_DURATION:
             pos = GMath.get_moving_equation(self.current_pos.position, self.dest_pos.position,
                                             game_config.MOVING_DURATION, self.__current_time)
@@ -176,9 +178,9 @@ class ChessPiece(Sprite):
             self.state = State.IDLE
             if self.type != Type.PLAYER:
                 self.count_turn_left()
-                # DATA->playSound("drop2");
+                DATA.play_sound("drop2")
             else:
-                # DATA->playSound("drop3");
+                DATA.play_sound("drop3")
                 pass
             self.is_end_turn = True
         pass
