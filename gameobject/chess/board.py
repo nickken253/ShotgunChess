@@ -48,6 +48,7 @@ class Board(Sprite, metaclass=Singleton):
         from gameobject.chess import CCounter
         from gamemanager import WConnect
         CCounter.render()
+        self.__chess_list.sort(key=lambda piece: piece.current_pos)
         WConnect.window.blit(self.texture, self.absolute_position)
         WConnect.window.blit(self.texture, self.absolute_position)
         from gameturn import GTM

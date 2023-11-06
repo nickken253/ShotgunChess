@@ -113,4 +113,4 @@ class GameRuleManager:
 
     def get_chess_list(self, level: int()) -> list[ChessPiece]:
         self.level_init(level)
-        return sorted(self.__chess_list, key=lambda x: x.current_pos)
+        return self.__chess_list
